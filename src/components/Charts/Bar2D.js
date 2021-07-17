@@ -1,29 +1,27 @@
 import React from "react";
 import ReactFC from "react-fusioncharts";
-// Include the fusioncharts library
 import FusionCharts from "fusioncharts";
-// Include the chart type
 import Chart from "fusioncharts/fusioncharts.charts";
-// Include the theme as fusion
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.ocean";
 
-// Adding the chart and theme as dependency to the core fusioncharts
 ReactFC.fcRoot(FusionCharts, Chart, FusionTheme);
 
-const Doughnut2D = ({ data }) => {
+const Bar2D = ({ data }) => {
   const chartConfigs = {
-    type: "doughnut2d", // The chart type
+    type: "bar2D", // The chart type
     width: "100%", // Width of the chart
     height: "400", // Height of the chart
     dataFormat: "json", // Data type
     dataSource: {
       // Chart Configuration
       chart: {
-        caption: "Stars per Language",
-        theme: "ocean",
-        decimal: 0,
-        doughnutRadius: "50%",
-        showPercentValues: 0,
+        caption: "Most forked",
+        theme: "fusion",
+        yAxisName: "Forks",
+        xAxisName: "Repos",
+        xAxisNameFontSize: "16px",
+        yAxisNameFontSize: "16px",
+        theme: "ocean"
       },
       // Chart Data
       data,
@@ -32,4 +30,4 @@ const Doughnut2D = ({ data }) => {
   return <ReactFC {...chartConfigs} />;
 };
 
-export default Doughnut2D;
+export default Bar2D;

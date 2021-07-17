@@ -1,60 +1,81 @@
-import React from 'react';
-import styled from 'styled-components';
-import { GithubContext } from '../context/context';
-import { Chart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
+import React from "react";
+import styled from "styled-components";
+import { GithubContext } from "../context/context";
+import { Pie2D, Column2D, Bar2D, Doughnut2D } from "./Charts";
 const Repos = () => {
-  const {repos} = React.useContext(GithubContext);
-  // console.log(repos);
+  const { repos } = React.useContext(GithubContext);
 
-  let languages = repos.reduce((total, item) =>  {
-    const {language} = item;
-    if(!language){
+  console.log(repos);
+  const languages = repos.reduce((total, item) => {
+    const { language, stargazers_count } = item;
+    if (!language) {
       return total;
     }
-    if(!total[language]){
-      total[language] = {label: language, value: 1}
+    if (!total[language]) {
+      total[language] = {
+        label: language,
+        value: 1,
+        stars: stargazers_count,
+      };
     } else {
-      total[language] = {...total[language], value: total[language].value + 1}
+      total[language] = {
+        ...total[language],
+        value: total[language].value + 1,
+        stars: total[language].stars + stargazers_count,
+      };
     }
     return total;
-  }, {})
+  }, {});
 
-languages = Object.values(languages).sort((a,b) => b.value - a.value);
+  // ---> stars per repos
+  // ---> name of repo per forks
+  // we need to extract stars, repos and forks
 
-const chartData = [
-  {
-    label: "Venezuela",
-    value: "290"
-  },
-  {
-    label: "Saudi",
-    value: "260"
-  },
-  {
-    label: "Canada",
-    value: "180"
-  },
-  {
-    label: "Iran",
-    value: "140"
-  },
-  {
-    label: "Russia",
-    value: "115"
-  },
-  {
-    label: "UAE",
-    value: "100"
-  }
+  let { stars, forks } = repos.reduce(
+    (total, item) => {
+      const { name, stargazers_count, forks } = item;
+      total.stars[stargazers_count] = {
+        label: name,
+        value: stargazers_count,
+      };
+      total.forks[stargazers_count] = {
+        label: name,
+        value: forks,
+      };
 
-];
+      return total;
+    },
+    {
+      stars: {},
+      forks: {},
+    }
+  );
 
-  return <section className="section">
+  stars = Object.values(stars).slice(-5).reverse();
+  forks = Object.values(forks).slice(-5).reverse();
+
+  console.log(forks);
+
+  const mostUsed = Object.values(languages).sort((a, b) => b.value - a.value);
+  const mostStars = Object.values(languages)
+    .sort((a, b) => b.stars - a.stars)
+    .map((item) => {
+      return {
+        ...item,
+        value: item.stars,
+      };
+    });
+
+  return (
+    <section className="section">
       <Wrapper className="section-center">
-        {/* <Chart data={chartData} /> */}
-        <Pie3D data={languages} />
+        <Pie2D data={mostUsed} />
+        <Column2D data={stars} />
+        <Doughnut2D data={mostStars} />
+        <Bar2D data={forks} />
       </Wrapper>
-     </section>;
+    </section>
+  );
 };
 
 const Wrapper = styled.div`

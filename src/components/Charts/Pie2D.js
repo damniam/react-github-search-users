@@ -5,25 +5,25 @@ import FusionCharts from "fusioncharts";
 // Include the chart type
 import Chart from "fusioncharts/fusioncharts.charts";
 // Include the theme as fusion
-import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import FusionTheme from "fusioncharts/themes/fusioncharts.theme.ocean";
 
 // Adding the chart and theme as dependency to the core fusioncharts
 ReactFC.fcRoot(FusionCharts, Chart, FusionTheme);
 
 
-const Pie3D = ({data}) => {
+const Pie2D = ({data}) => {
   const chartConfigs = {
-    type: "pie3d", // The chart type
-    width: "400", // Width of the chart
+    type: "pie2d", // The chart type
+    width: "100%", // Width of the chart
     height: "400", // Height of the chart
     dataFormat: "json", // Data type
     dataSource: {
       // Chart Configuration
       chart: {
         caption: "Languages", 
-        theme: "fusion",
+        theme: "ocean",
         decimal: 0,
-        pieRadius: '40%', 
+        pieRadius: '50%', 
       },
       // Chart Data
       data,
@@ -33,4 +33,4 @@ const Pie3D = ({data}) => {
   
 }
 
-export default Pie3D;
+export default Pie2D;
