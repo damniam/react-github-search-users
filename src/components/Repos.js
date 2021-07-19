@@ -5,7 +5,6 @@ import { Pie2D, Column2D, Bar2D, Doughnut2D } from "./Charts";
 const Repos = () => {
   const { repos } = React.useContext(GithubContext);
 
-  console.log(repos);
   const languages = repos.reduce((total, item) => {
     const { language, stargazers_count } = item;
     if (!language) {
@@ -53,8 +52,6 @@ const Repos = () => {
 
   stars = Object.values(stars).slice(-5).reverse();
   forks = Object.values(forks).slice(-5).reverse();
-
-  console.log(forks);
 
   const mostUsed = Object.values(languages).sort((a, b) => b.value - a.value);
   const mostStars = Object.values(languages)
