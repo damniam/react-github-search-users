@@ -8,7 +8,6 @@ const rootUrl = "https://api.github.com";
 
 const GithubContext = React.createContext();
 
-
 const GithubProvider = ({ children }) => {
   const [githubUser, setGithubUser] = useState(mockUser);
   const [repos, setRepos] = useState(mockRepos);
@@ -31,30 +30,33 @@ const GithubProvider = ({ children }) => {
       await Promise.allSettled([
         axios.get(`${rootUrl}/users/${user}/repos?per_page=100`),
         axios.get(`${rootUrl}/users/${user}/followers`),
-      ]).then((results) => {
-        const [repos, followers] = results;
-        const status = "fulfilled";
-        if (repos.status === status) {
-          setRepos(repos.value.data);
-        }
-        if (followers.status === status) {
-          setFollowers(followers.value.data);
-        }
-      }).catch(error => console.log(error));
+      ])
+        .then((results) => {
+          const [repos, followers] = results;
+          const status = "fulfilled";
+          if (repos.status === status) {
+            setRepos(repos.value.data);
+          }
+          if (followers.status === status) {
+            setFollowers(followers.value.data);
+          }
+        })
+        .catch((error) => console.log(error));
     } else {
       toggleError(true, "there is no user with that username");
     }
-    checkRequest();
+    checkRequests();
     setLoading(false);
   };
 
-  const checkRequest = () => {
+  const checkRequests = () => {
     axios(`${rootUrl}/rate_limit`)
       .then(({ data }) => {
         let {
           rate: { remaining },
         } = data;
         setRequests(remaining);
+        
         if (remaining === 0) {
           toggleError(
             true,
@@ -69,8 +71,12 @@ const GithubProvider = ({ children }) => {
     setError({ show, msg });
   };
 
-  useEffect(checkRequest(), []);
+  useEffect(checkRequests, []);
 
+  useEffect(() => {
+    searchGithubUser("wesbos");
+    // eslint-disable-next-line
+  }, []);
   return (
     <GithubContext.Provider
       value={{
