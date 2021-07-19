@@ -17,7 +17,6 @@ const Column2D = ({ data }) => {
       // Chart Configuration
       chart: {
         caption: "Most popular",
-        theme: "fusion",
         yAxisName: "Stars",
         xAxisName: "Repos",
         xAxisNameFontSize: "16px",

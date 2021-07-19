@@ -16,7 +16,6 @@ const Bar2D = ({ data }) => {
       // Chart Configuration
       chart: {
         caption: "Most forked",
-        theme: "fusion",
         yAxisName: "Forks",
         xAxisName: "Repos",
         xAxisNameFontSize: "16px",
